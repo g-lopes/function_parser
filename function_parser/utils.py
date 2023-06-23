@@ -53,7 +53,7 @@ def get_sha(tmp_dir: tempfile.TemporaryDirectory, nwo: str):
 def download(nwo: str):
     os.environ['GIT_TERMINAL_PROMPT'] = '0'
     tmp_dir = tempfile.TemporaryDirectory()
-    cmd = ['git', 'clone', '--depth=1', 'https://github.com/{}.git'.format(nwo), '{}/{}'.format(tmp_dir.name, nwo)]
+    cmd = ['git', 'clone', '--depth=1', nwo, '{}/{}'.format(tmp_dir.name, nwo)]
     subprocess.run(cmd, stdin=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
     return tmp_dir
 
