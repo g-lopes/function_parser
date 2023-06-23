@@ -30,6 +30,13 @@ def remap_nwo(nwo: str) -> Tuple[str, str]:
             if r.history:
                 return (nwo, '/'.join(re.findall(r'"https://github.com/.+"', r.history[0].text)[0].strip('"').split('/')[-2:]))
             return (nwo, nwo)
+
+    cmd = ['git', 'ls-remote', nwo]
+    result = subprocess.run(cmd, stdin=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
+    # git ls-remote returns 0 if url is a valid git repo
+    if result.returncode == 0:
+        return (nwo, nwo)
+
     return (nwo, None)
 
 
