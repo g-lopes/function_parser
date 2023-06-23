@@ -24,12 +24,13 @@ def chunks(l: List, n: int):
 
 
 def remap_nwo(nwo: str) -> Tuple[str, str]:
-    r = requests.get('https://github.com/{}'.format(nwo))
+    full_url = 'https://github.com/{}'.format(nwo)
+    r = requests.get(full_url)
     if r.status_code not in (404, 451, 502): # DMCA
         if 'migrated' not in r.text:
             if r.history:
                 return (nwo, '/'.join(re.findall(r'"https://github.com/.+"', r.history[0].text)[0].strip('"').split('/')[-2:]))
-            return (nwo, nwo)
+            return (nwo, full_url)
 
     cmd = ['git', 'ls-remote', nwo]
     result = subprocess.run(cmd, stdin=subprocess.DEVNULL, stderr=subprocess.DEVNULL, stdout=subprocess.DEVNULL)
